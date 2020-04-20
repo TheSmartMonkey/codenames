@@ -102,7 +102,6 @@ Chocolat
 Église
 Cirque
 Argile
-Cliff
 Manteau
 Horloge
 Clown
@@ -314,7 +313,6 @@ Moniteur
 Monster
 Lune
 Mop
-Moth
 Moto
 Montagne
 Souris
@@ -475,7 +473,6 @@ Star
 État
 Bâton
 Actionnaire
-Stout
 Fourneau
 Paille
 Flux

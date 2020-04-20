@@ -1,0 +1,21 @@
+@charset "UTF-8";
+
+/*! Global css app file */
+body {
+	--main-color: #343a40;
+	--red-team: #ee2222;
+	--blue-team: #2222ee;
+
+    background-color: #fff;
+	color: #111;
+	font-family: "Lucida Sans Unicode", "Lucida Sans", sans-serif;
+}
+
+/* Margin */
+.separator {
+	margin-top: 3%;
+}
+
+.separator-large {
+	margin-top: 6%;
+}

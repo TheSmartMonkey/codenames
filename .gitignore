@@ -1,2 +1,6 @@
 # Editor
 .vscode
+
+# Cache
+__pycache__
+socket-service/__pycache__

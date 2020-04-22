@@ -1,0 +1,45 @@
+@import url("style.css");
+
+/** NavBar css file */
+
+header {
+    margin-bottom: 60px;
+    z-index: 999;
+}
+
+header ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+header li {
+float: left;
+}
+
+header li img {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.nav-link {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 2px;
+    text-decoration: none;
+}
+
+.nav-right {
+    float: right;
+}
+

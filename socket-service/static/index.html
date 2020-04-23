@@ -1,0 +1,34 @@
+<html>
+<body>
+<script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf-8">
+ $(document).ready(function() {
+    var socket = io();
+    socket.on('message', function(msg) {
+            $("#log").append('<p>Received: ' + msg + '</p>');
+        });
+    $("form#join").submit(function(event){
+            socket.emit("join",{"username":$("#username").val(),"gamename":$("#gamename").val()});
+            return false;
+            });
+    $.getJSON( "newroom", function( data ) {
+            $("#roomid").val(data);
+        });
+ 
+ });
+</script>
+
+
+<div>
+ <form id="join">
+    <label>Username</label><input type="text" id="username"></input><br/>
+    <label>Roomid</label><input type="text" id="roomid"></input><br/>
+    <button type="submit" method="POST" action="#">Join</button>
+</form>
+</div>
+
+<div id="log">ready</div>
+
+</body>
+</html>

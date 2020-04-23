@@ -25,7 +25,6 @@ Balloon
 Banana
 Baseball
 Basketball
-Bat
 Battery
 Beach
 Bedbug
@@ -102,7 +101,6 @@ Chocolate
 Church
 Circus
 Clay
-Cliff
 Cloak
 Clockwork
 Clown
@@ -314,7 +312,6 @@ Monitor
 Monster
 Moon
 Mop
-Moth
 Motorcycle
 Mountain
 Mouse
@@ -475,7 +472,6 @@ Star
 State
 Stick
 Stockholder
-Stout
 Stove
 Straw
 Stream

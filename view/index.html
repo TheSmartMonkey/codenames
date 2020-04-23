@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/modal.css">
+
+    <!-- Header -->
+    <div w3-include-html="../components/header.html"></div>
+</head>
+
+<body>
+    <!-- NavBar -->
+    <div w3-include-html="../components/navbar.html"></div>
+
+    <h1 class="center">Code Names</h1>
+    <div class="center">
+        <button class="button button-validate" id="create-game">
+            Create a game
+        </button>
+    </div>
+
+    <div id="my-modal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>Create Game</h2>
+            </div>
+            <div class="modal-body">
+                <form class="separator" action="room.html">
+                    <label for="fname">Pseudo</label>
+                    <input type="text" id="fname" name="firstname" placeholder="Your name...">
+
+                    <label for="avatar">Avatar</label>
+                    <select id="avatar" name="avatar">
+                        <option value="man">man</option>
+                        <option value="woman">woman</option>
+                        <option value="dog">dog</option>
+                        <option value="cat">cat</option>
+                    </select>
+
+                    <!-- Submit -->
+                    <div class="button-right separator">
+                        <button class="button button-validate" id="create-game" type="submit">
+                            Create
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../components/includeHTML.js"></script>
+    <script src="../js/index.js"></script>
+    <script>
+        includeHTML();
+    </script>
+
+    <!-- Footer -->
+    <div w3-include-html="../components/footer.html"></div>
+</body>
+
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/room.css">
+
+    <!-- Header -->
+    <div w3-include-html="../components/header.html"></div>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
+</head>
+
+<body>
+    <!-- NavBar -->
+    <div w3-include-html="../components/navbar.html"></div>
+
+    <!-- Admin modal -->
+    <div class="card">
+        <div class="card-container">
+            <h4><b>Invite your frends by sharing this link</b></h4>
+            <div>
+                <input type="text" value="vandelle.com/" id="link-access" readonly>
+                <img class="d-inline-block align-top" src="../assets/icones/copy.png" onclick="datatable.copyLink()" />
+            </div>
+            <div class="button-container">
+                <button class="button button-validate" onclick="location.href='board.html'";>
+                    Launch Game
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Datatable -->
+    <table id="usetTable" class="display">
+        <thead>
+            <th>User</th>
+            <th>Pseudo</th>
+            <th>Role</th>
+            <th>Team</th>
+            <th>Ready?</th>
+            <th>Status</th>
+            <th>Action</th>
+        </thead>
+        <tbody id="table-body">
+            <!-- <tr>
+                <td id="user-list">
+                    <img class="d-inline-block align-top" src="../assets/icones/cat.png" />
+                </td>
+                <td id="name-list">
+                    Laurent
+                    <div>Admin</div>
+                </td>
+                <td id="role-list">
+                    <select id="roles-dropdown">
+                        <option value="spymaster">Spymaster</option>
+                        <option value="player">Player</option>
+                    </select>
+                </td>
+                <td id="team-list">
+                    <select id="team-dropdown">
+                        <option value="blue">Blue</option>
+                        <option value="red">Red</option>
+                    </select>
+                </td>
+                <td id="ready-list">
+                    <div class="container">
+                        <div class="round">
+                            <input type="checkbox" id="checkbox" />
+                            <label for="checkbox"></label>
+                        </div>
+                    </div>
+                </td>
+                <td id="status-list">Ready</td>
+                <td id="action-list">
+                    <img class="d-inline-block align-top" src="../assets/icones/delete.png" />
+                </td>
+            </tr> -->
+            <!-- <tr>
+                <td id="user-list">
+                    <img class="d-inline-block align-top" src="../assets/icones/dog.png" />
+                </td>
+                <td id="name-list">
+                    Elsa
+                    <div>Member</div>
+                </td>
+                <td id="role-list">Member</td>
+                <td id="team-list">Team</td>
+                <td id="ready-list">
+                    <div class="container">
+                        <div class="round">
+                            <input type="checkbox" id="checkbox2" />
+                            <label for="checkbox2"></label>
+                        </div>
+                    </div>
+                </td>
+                <td id="status-list">Not Ready</td>
+                <td id="action-list">
+                    <img class="d-inline-block align-top" src="../assets/icones/delete.png" />
+                </td>
+            </tr> -->
+        </tbody>
+    </table>
+
+    <!-- Scripts -->
+    <script src="../components/includeHTML.js"></script>
+    <script src="../js/room.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+    <script>
+        includeHTML();
+        const datatable = new Datatable();
+        datatable.table; // Call the table const in the constructor
+    </script>
+
+    <!-- Footer -->
+    <div w3-include-html="../components/footer.html"></div>
+</body>
+
+</html>

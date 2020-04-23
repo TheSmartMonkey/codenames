@@ -1,0 +1,121 @@
+@import url("style.css");
+
+/** Room page css file */
+
+/** Datatable */
+table {
+    text-align: left;
+}
+
+#user-list img {
+    height: 48px;
+    width: 54px;
+}
+
+#name-list div {
+    font-style: italic;
+}
+
+#role-list {
+    font-style: italic;
+}
+
+#ready-list {
+    width: 2%;
+}
+
+#status-list {
+    width: 10%;
+}
+
+#action-list {
+    width: 2%;
+}
+
+#action-list img {
+    height: 32px;
+    width: 32px;
+    cursor: pointer; /* Add a hand to click */
+}
+
+
+/* Ready Status */
+.round {
+    position: relative;
+}
+
+.round label {
+    background-color: var(--background-white);
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+    height: 28px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 28px;
+}
+
+.round label:after {
+    border: 2px solid var(--background-white);
+    border-top: none;
+    border-right: none;
+    content: "";
+    height: 6px;
+    left: 7px;
+    opacity: 0;
+    position: absolute;
+    top: 8px;
+    transform: rotate(-45deg);
+    width: 12px;
+}
+
+.round input[type="checkbox"] {
+    visibility: hidden;
+}
+
+.round input[type="checkbox"]:checked + label {
+    background-color: var(--validate-green);
+    border-color: var(--validate-green);
+}
+
+.round input[type="checkbox"]:checked + label:after {
+    opacity: 1;
+}
+
+/* Button launch */
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 40%;
+    margin-top: 6%;
+    margin-bottom: 4%;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.card-container {
+    padding: 2px 16px;
+}
+
+.card-container img {
+    height: 20px;
+    width: 20px;
+    cursor: pointer; /* Add a hand to click */
+}
+
+.button-container {
+    margin-top: 2%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+select {
+    width: 100%;
+}
+
+input[type=text] {
+	width: 70%;
+}

@@ -1,0 +1,18 @@
+@import url("style.css");
+
+/** Home page css file */
+.center {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-right {
+    display: flex;
+    justify-content: flex-end;
+}
+
+input[type=text], select {
+	width: 100%;
+}

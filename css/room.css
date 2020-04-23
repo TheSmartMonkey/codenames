@@ -2,33 +2,6 @@
 
 /** Room page css file */
 
-/** Side nav */
-.sidenav {
-    height: 100%;
-    width: 280px;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: var(--sidebar-color);
-    overflow-x: hidden;
-    padding-top: 100px;
-    z-index:-1; /* Position behind everything */
-}
-
-.sidenav a {
-    padding: 6px 8px 6px 16px;
-    text-decoration: none;
-    font-size: 25px;
-    color: var(--background-white);
-    display: block;
-}
-
-.main {
-    margin-left: 280px; /* Same as the width of the sidenav */
-    padding: 0px 10px;
-}
-
 /** Datatable */
 table {
     text-align: left;
@@ -110,7 +83,39 @@ table {
     opacity: 1;
 }
 
-/* Button validate */
-.button-validate {
-    float: right;
+/* Button launch */
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 40%;
+    margin-top: 6%;
+    margin-bottom: 4%;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.card-container {
+    padding: 2px 16px;
+}
+
+.card-container img {
+    height: 20px;
+    width: 20px;
+    cursor: pointer; /* Add a hand to click */
+}
+
+.button-container {
+    margin-top: 2%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+select {
+    width: 100%;
+}
+
+input[type=text] {
+	width: 70%;
 }

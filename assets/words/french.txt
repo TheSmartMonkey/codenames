@@ -25,7 +25,6 @@ Ballon
 Banane
 Baseball
 Basket-ball
-Bat
 Batterie
 Plage
 Punaise

@@ -25,7 +25,6 @@ Balloon
 Banana
 Baseball
 Basketball
-Bat
 Battery
 Beach
 Bedbug

@@ -8,7 +8,7 @@ if ( sessionStorage.hasOwnProperty("language") ) {
     language=sessionStorage.getItem("language"); 
 }
 
-let socket = io();
+let socket = io("http://home.vandelle.com",{path:"/srv}"});
 socket.on('setplayer', function(playerdata) {
         console.log(playerdata);
         datatable.setRole(playerdata.name,playerdata.role);
@@ -165,7 +165,7 @@ class Datatable {
 
 
 function loadTable() {
-    document.getElementById("link-access").value="http://"+location.host+"/static/view/index.html?roomid="+roomid
+    document.getElementById("link-access").value="http://"+location.host+"/site/codenames/view/index.html?roomid="+roomid
     getRequest("/srv/getplayers/"+roomid,'json')
         .then(players => {
             const tableBody = document.getElementById('table-body');

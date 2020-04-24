@@ -4,7 +4,7 @@ var username = sessionStorage.getItem("username");
 let role = sessionStorage.getItem("role");
 let team = sessionStorage.getItem("team");
 
-let socket = io();
+let socket = io("http://home.vandelle.com",{path:"/srv}"});
 socket.on('turnedcard', function(data) {
         console.log(data);
         word=data["word"];

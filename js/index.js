@@ -33,7 +33,7 @@ function setbutton() {
         sessionStorage.setItem('isAdmin',false);
     } 
     else {
-        getRequest('/newroom','text')
+        getRequest('/srv/newroom','text')
             .then(roomid => {
                 sessionStorage.setItem('roomid', roomid);
             });
@@ -50,7 +50,7 @@ function createUser() {
         "isAdmin":sessionStorage.getItem('isAdmin')
     }
     sessionStorage.setItem('username',data.username);
-    postRequest("/addplayer",data,'text')
+    postRequest("/srv/addplayer",data,'text')
         .then(response => { console.log(response);
                             location.href='room.html';    
                     });

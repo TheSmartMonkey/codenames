@@ -166,7 +166,7 @@ class Datatable {
 
 function loadTable() {
     document.getElementById("link-access").value="http://"+location.host+"/static/view/index.html?roomid="+roomid
-    getRequest("/getplayers/"+roomid,'json')
+    getRequest("/srv/getplayers/"+roomid,'json')
         .then(players => {
             const tableBody = document.getElementById('table-body');
             players.forEach(player => {

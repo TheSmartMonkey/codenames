@@ -9,24 +9,24 @@ app = Flask(__name__,static_folder="../../",static_url_path="/static")
 socketio = SocketIO(app)
 
 
-@app.route('/test')
+@app.route('/srv/test')
 def index():
     return send_from_directory('../static','index.html')
 
-@app.route('/newroom')
+@app.route('/srv/newroom')
 def newroom():
     room=Room()
     rooms[room.roomid]=room
     print("adding room:"+room.roomid)
     return room.roomid, 200
 
-@app.route('/newgame/<roomid>/<language>')
+@app.route('/srv/newgame/<roomid>/<language>')
 def handle_newgame(roomid,language):
     print('new game in room ' + roomid)
     rooms[roomid].createGame(language)
     return "gamecreated", 200
 
-@app.route('/addplayer',methods=["POST"])
+@app.route('/srv/addplayer',methods=["POST"])
 def handle_addplayer():
     data = request.get_json()
     username = data['username']
@@ -36,12 +36,12 @@ def handle_addplayer():
     rooms[roomid].addPlayer(username,avatar,isAdmin)
     return "user added", 200
 
-@app.route('/getplayers/<roomid>')
+@app.route('/srv/getplayers/<roomid>')
 def handle_getplayer(roomid):
     response=rooms[roomid].getPlayers()
     return jsonify(response), 200
 
-@app.route('/getcard/<roomid>/<username>')
+@app.route('/srv/getcard/<roomid>/<username>')
 def card(roomid,username):
     role=rooms[roomid].getRole(username)
     if role=="spymaster":
@@ -50,7 +50,7 @@ def card(roomid,username):
         response=rooms[roomid].game.getPlayerWords()
     return jsonify(response), 200
 
-@app.route('/getscores/<roomid>')
+@app.route('/srv/getscores/<roomid>')
 def handle_getsocres(roomid):
     response=rooms[roomid].game.getScores()
     return jsonify(response), 200

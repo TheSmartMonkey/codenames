@@ -23,7 +23,7 @@ class Board {
 
     // Creates the 5 x 5 board
     createBoard() {
-        getRequest('/getcard/'+roomid+"/"+username,'json')
+        getRequest('/srv/getcard/'+roomid+"/"+username,'json')
             .then(cards => {
                 
                 let numberOfElements = 0;
@@ -33,7 +33,7 @@ class Board {
                     numberOfElements++;
                 });
             });
-        getRequest('/getscores/'+roomid,'json')
+        getRequest('/srv/getscores/'+roomid,'json')
         .then(scores => {
             this.setScores(scores);
         });

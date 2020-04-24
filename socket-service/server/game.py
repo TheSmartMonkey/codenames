@@ -20,15 +20,15 @@ class CodenamesGame(object):
         allWords=[w.strip() for w in codecs.open(self.dictFile,encoding="utf-8")]
         self.words=dict( (w,"") for w in sample(allWords,self.nb_words))
         for team in self.team_names:
-            self.assignWord(team,nb_cards)
-        self.assignWord("bomb",nb_bombs)
+            self.assignWord(team,self.nb_cards)
+        self.assignWord("bomb",self.nb_bombs)
         self.found=set()
 
     def getSpyMasterWords(self):
-        return [{"word":word,"team":team,"found":word is self.found} for word,team in self.words.items()]
+        return [{"word":word,"team":team if team!="" else "grey","found":word is self.found} for word,team in self.words.items()]
 
     def getPlayerWords(self):
-        return [{"word":word,"found":word is self.found} for word,team in self.words.items()]
+        return [{"word":word,"team":team if team!="" else "grey","found":word is self.found} for word,team in self.words.items()]
 
     def turnCard(self,team,word):
         if self.words[word]==team:

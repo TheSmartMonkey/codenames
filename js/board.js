@@ -1,85 +1,91 @@
+var roomid = sessionStorage.getItem("roomid");
+var username = sessionStorage.getItem("username");
+
+let role = sessionStorage.getItem("role");
+let team = sessionStorage.getItem("team");
+
+let socket = io();
+socket.on('turnedcard', function(data) {
+        console.log(data);
+        word=data["word"];
+        board.turnCard(word);
+        scores=data["scores"];
+        board.setScores(scores);
+    });
+
+socket.emit("join",{"username":username,"roomid":roomid});
+
+
 class Board {
     constructor() {
-        this.createBoard()
+        this.createBoard();
     }
 
     // Creates the 5 x 5 board
     createBoard() {
-        getRequest('http://home.vandelle.com/site/codenames/assets/words/french.txt')
-            .then(responseData => {
-                const words = responseData.split('\n') // List of words
-                const randomWords = [];
+        getRequest('/getcard/'+roomid+"/"+username,'json')
+            .then(cards => {
                 
-                // Get 25 random words
-                for (let i = 0; i < 25; i++) {
-                    let verify = true;
-                    let rand = words[Math.floor(Math.random() * words.length)];
-
-                    // Verify that there is no double words
-                    randomWords.forEach(element => {
-                        if (rand == element) {
-                            i--;
-                            verify = false;
-                        }
-                    });
-                    if (rand != "" && verify == true) {
-                        randomWords.push(rand);
-                    }
-                }
-
                 let numberOfElements = 0;
-                randomWords.forEach(word => {
-                    if (numberOfElements < 5) {
-                        this.cardComponent(word, "WIN", document.getElementById("column1"))
-                    } else if (numberOfElements < 10) {
-                        this.cardComponent(word, "WIN", document.getElementById("column2"))
-                    } else if (numberOfElements < 15) {
-                        this.cardComponent(word, "WIN", document.getElementById("column3")) 
-                    } else if (numberOfElements < 20) {
-                        this.cardComponent(word, "WIN", document.getElementById("column4")) 
-                    } else if (numberOfElements < 25) {
-                        this.cardComponent(word, "WIN", document.getElementById("column5")) 
-                    }
+                cards.forEach(card => {
+                    var colIndex=Math.trunc(numberOfElements/5)+1;
+                    this.cardComponent(card.word,card.team,role, document.getElementById("column"+colIndex))
                     numberOfElements++;
                 });
             });
+        getRequest('/getscores/'+roomid,'json')
+        .then(scores => {
+            this.setScores(scores);
+        });
     }
 
     // Rotate the card
     clickCard(word) {
+        socket.emit("turncard",{"roomid":roomid,"team":team,"word":word});
+        this.turnCard(word);
+    }
+
+    turnCard(word) {
         const cardElement = document.getElementById(word)
         cardElement.setAttribute("style", "transform: rotateY(180deg);")
     }
 
-    cardComponent(word, state, element) {
-        element.innerHTML +=
-        '<div class="flip-card" onclick="board.clickCard(\'' + word + '\')">' +
-            '<div class="flip-card-inner" id="' + word + '">' +
-                '<div class="flip-card-front">' +
-                    '<h2>' + word + '</h2>' +
+    setScores(scores) {
+        const scoreBlue = document.getElementById('game-score-blue');
+        const scoreRed = document.getElementById('game-score-red');
+        scoreBlue.innerHTML = scores.blue;
+        scoreRed.innerHTML = scores.red;
+        // const scoreElement = document.getElementById('game-score');
+        // scoreElement.innerHTML = scores.blue + " - " + scores.red;
+    }
+
+    cardComponent(word, team,role, element) {
+        if (role=="spymaster") {
+            element.innerHTML +=
+            '<div class="flip-card" onclick="board.clickCard(\'' + word + '\')">' +
+                '<div class="flip-card-inner" id="' + word + '">' +
+                    '<div class="flip-card-front flip-card-front-' + team + '">' +
+                        '<h2>' + word + '</h2>' +
+                    '</div>' +
+                    '<div class="flip-card-back flip-card-back-' + team + '">' +
+                        '<h2>' + word + '</h2>' +
+                    '</div>' +
                 '</div>' +
-                '<div class="flip-card-back-blue">' +
-                    '<h2>' + state + '</h2>' +
+            '</div>';
+        } else {
+            element.innerHTML +=
+            '<div class="flip-card" onclick="board.clickCard(\'' + word + '\')">' +
+                '<div class="flip-card-inner" id="' + word + '">' +
+                    '<div class="flip-card-front">' +
+                        '<h2>' + word + '</h2>' +
+                    '</div>' +
+                    '<div class="flip-card-back flip-card-back-' + team + '">' +
+                        '<h2>' + word + '</h2>' +
+                    '</div>' +
                 '</div>' +
-            '</div>' +
-        '</div>';
+            '</div>';
+        }
     }
 }
 
 
-//* UTILITY functions
-// HTTP request handler
-function getRequest(url) {
-    const promise = new Promise((resolve, reject) => {
-        const Http = new XMLHttpRequest();
-        Http.open('GET', url);
-        Http.responseType = 'text';
-
-        Http.onload = () => {
-            resolve(Http.response);
-        };
-
-        Http.send();
-    });
-    return promise;
-}

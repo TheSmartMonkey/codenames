@@ -5,13 +5,30 @@
 <script type="text/javascript" charset="utf-8">
  $(document).ready(function() {
     var socket = io();
-    socket.on('message', function(msg) {
-            $("#log").append('<p>Received: ' + msg + '</p>');
+    socket.on('newplayer', function(msg) {
+            $("#log").append('<p>'+msg.username+' joined the room</p>');
         });
+
+    socket.on('resetgame', function(msg) {
+        $.getJSON( "/card/"+$("#roomid").val()+"/spymaster", 
+            function( carddata ) {
+                carddata.forEach(card => {
+                    $("#game").append('<div>'+card.word+'</div>');
+                });
+        });
+    });
+
+
     $("form#join").submit(function(event){
-            socket.emit("join",{"username":$("#username").val(),"gamename":$("#gamename").val()});
+            socket.emit("join",{"username":$("#username").val(),"roomid":$("#roomid").val()});
             return false;
             });
+
+    $("form#newgame").submit(function(event){
+            socket.emit("newgame",{"roomid":$("#roomid").val(),"language":$("#language").val()});
+            return false;
+            });
+
     $.getJSON( "newroom", function( data ) {
             $("#roomid").val(data);
         });
@@ -26,9 +43,14 @@
     <label>Roomid</label><input type="text" id="roomid"></input><br/>
     <button type="submit" method="POST" action="#">Join</button>
 </form>
+<form id="newgame">
+    <label>Language</label><input type="text" id="language" value="french"></input><br/>
+    <button type="submit" method="POST" action="#">Start Game</button>
+</form>
 </div>
 
 <div id="log">ready</div>
+<div id="game"></div>
 
 </body>
 </html>

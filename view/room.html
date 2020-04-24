@@ -13,20 +13,20 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
 </head>
 
-<body>
+<body onload="loadTable()">
     <!-- NavBar -->
     <div w3-include-html="../components/navbar.html"></div>
 
     <!-- Admin modal -->
-    <div class="card">
+    <div class="card" id="admin-card">
         <div class="card-container">
             <h4><b>Invite your frends by sharing this link</b></h4>
             <div>
-                <input type="text" value="vandelle.com/" id="link-access" readonly>
+                <input type="text" value="" id="link-access" size="80" readonly>
                 <img class="d-inline-block align-top" src="../assets/icones/copy.png" onclick="datatable.copyLink()" />
             </div>
             <div class="button-container">
-                <button class="button button-validate" onclick="location.href='board.html'";>
+                <button class="button button-validate" onclick="startgame()">
                     Launch Game
                 </button>
             </div>
@@ -45,67 +45,12 @@
             <th>Action</th>
         </thead>
         <tbody id="table-body">
-            <!-- <tr>
-                <td id="user-list">
-                    <img class="d-inline-block align-top" src="../assets/icones/cat.png" />
-                </td>
-                <td id="name-list">
-                    Laurent
-                    <div>Admin</div>
-                </td>
-                <td id="role-list">
-                    <select id="roles-dropdown">
-                        <option value="spymaster">Spymaster</option>
-                        <option value="player">Player</option>
-                    </select>
-                </td>
-                <td id="team-list">
-                    <select id="team-dropdown">
-                        <option value="blue">Blue</option>
-                        <option value="red">Red</option>
-                    </select>
-                </td>
-                <td id="ready-list">
-                    <div class="container">
-                        <div class="round">
-                            <input type="checkbox" id="checkbox" />
-                            <label for="checkbox"></label>
-                        </div>
-                    </div>
-                </td>
-                <td id="status-list">Ready</td>
-                <td id="action-list">
-                    <img class="d-inline-block align-top" src="../assets/icones/delete.png" />
-                </td>
-            </tr> -->
-            <!-- <tr>
-                <td id="user-list">
-                    <img class="d-inline-block align-top" src="../assets/icones/dog.png" />
-                </td>
-                <td id="name-list">
-                    Elsa
-                    <div>Member</div>
-                </td>
-                <td id="role-list">Member</td>
-                <td id="team-list">Team</td>
-                <td id="ready-list">
-                    <div class="container">
-                        <div class="round">
-                            <input type="checkbox" id="checkbox2" />
-                            <label for="checkbox2"></label>
-                        </div>
-                    </div>
-                </td>
-                <td id="status-list">Not Ready</td>
-                <td id="action-list">
-                    <img class="d-inline-block align-top" src="../assets/icones/delete.png" />
-                </td>
-            </tr> -->
         </tbody>
     </table>
 
     <!-- Scripts -->
-    <script src="../components/includeHTML.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+    <script src="../js/module.js"></script>
     <script src="../js/room.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>

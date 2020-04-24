@@ -13,7 +13,7 @@
     <div w3-include-html="../components/header.html"></div>
 </head>
 
-<body>
+<body onload="setbutton()">
     <!-- NavBar -->
     <div w3-include-html="../components/navbar.html"></div>
 
@@ -29,34 +29,32 @@
         <div class="modal-content">
             <div class="modal-header">
                 <span class="close">&times;</span>
-                <h2>Create Game</h2>
+                <h2 id="create-title">Create Game</h2>
             </div>
             <div class="modal-body">
-                <form class="separator" action="room.html">
-                    <label for="fname">Pseudo</label>
-                    <input type="text" id="fname" name="firstname" placeholder="Your name...">
+                <label for="fname">Pseudo</label>
+                <input type="text" id="fname" name="firstname" placeholder="Your name...">
 
-                    <label for="avatar">Avatar</label>
-                    <select id="avatar" name="avatar">
-                        <option value="man">man</option>
-                        <option value="woman">woman</option>
-                        <option value="dog">dog</option>
-                        <option value="cat">cat</option>
-                    </select>
+                <label for="avatar">Avatar</label>
+                <select id="avatar" name="avatar">
+                    <option value="man">man</option>
+                    <option value="woman">woman</option>
+                    <option value="dog">dog</option>
+                    <option value="cat">cat</option>
+                </select>
 
-                    <!-- Submit -->
-                    <div class="button-right separator">
-                        <button class="button button-validate" id="create-game" type="submit">
-                            Create
-                        </button>
-                    </div>
-                </form>
+                <!-- Submit -->
+                <div class="button-right separator">
+                    <button class="button button-validate" id="create-game" onclick="createUser()">
+                        Create
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Scripts -->
-    <script src="../components/includeHTML.js"></script>
+    <script src="../js/module.js"></script>
     <script src="../js/index.js"></script>
     <script>
         includeHTML();

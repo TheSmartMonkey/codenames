@@ -17,6 +17,12 @@
     <div w3-include-html="../components/navbar.html"></div>
 
     <h1>Code Names</h1>
+    <div class="game-info" id="game-score">
+        <span id="game-score-blue"></span>
+         - 
+        <span id="game-score-red"></span>
+    </div>
+    <div class="game-info" id="game-turn"></div>
     <div class="board" id="board">
         <div id="column1"></div>
         <div id="column2"></div>
@@ -26,7 +32,8 @@
     </div>
 
     <!-- Script -->
-    <script src="../components/includeHTML.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+    <script src="../js/module.js"></script>
     <script src="../js/board.js"></script>
     <script>
         includeHTML();

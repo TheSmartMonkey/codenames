@@ -4,7 +4,7 @@ from flask_socketio import SocketIO, send, emit, join_room, leave_room
 from room import Room
 rooms=dict()
 
-app = Flask(__name__,static_folder="../../",static_url_path="/static")
+app = Flask(__name__,static_folder="../../",static_url_path="/site/codenames")
 
 socketio = SocketIO(app)
 

@@ -3,12 +3,12 @@ let username = sessionStorage.getItem("username");
 let isAdmin = sessionStorage.getItem("isAdmin");
 
 
-let language="english"; 
+let language="french"; 
 if ( sessionStorage.hasOwnProperty("language") ) {
     language=sessionStorage.getItem("language"); 
 }
 
-let socket = io("http://home.vandelle.com",{path:"/srv}"});
+let socket = io();
 socket.on('setplayer', function(playerdata) {
         console.log(playerdata);
         datatable.setRole(playerdata.name,playerdata.role);
@@ -17,7 +17,7 @@ socket.on('setplayer', function(playerdata) {
 
 socket.on('newplayer', function(playerdata) {
         console.log(playerdata);
- //       loadTable();
+        loadTable();
     });
 
 
@@ -169,6 +169,7 @@ function loadTable() {
     getRequest("/srv/getplayers/"+roomid,'json')
         .then(players => {
             const tableBody = document.getElementById('table-body');
+            tableBody.innerHTML="";
             players.forEach(player => {
                 let permission="Member";
                 if (player.isAdmin==="true") {
@@ -203,5 +204,4 @@ function selectLanguage(selectlanguage) {
 
 function startgame() {
     socket.emit("newgame",{"roomid":roomid,"language":language});
-    location.href='board.html';
 }

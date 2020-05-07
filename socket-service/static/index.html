@@ -4,7 +4,13 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
 <script type="text/javascript" charset="utf-8">
  $(document).ready(function() {
-    var socket = io();
+    var socket = io({transports: ['websocket']});
+
+    socket.on("*", function(msg) {
+        $("#log").append('<p>'+msg+'</p>');
+        next();
+        });
+
     socket.on('newplayer', function(msg) {
             $("#log").append('<p>'+msg.username+' joined the room</p>');
         });
@@ -24,14 +30,6 @@
             return false;
             });
 
-    $("form#newgame").submit(function(event){
-            socket.emit("newgame",{"roomid":$("#roomid").val(),"language":$("#language").val()});
-            return false;
-            });
-
-    $.getJSON( "newroom", function( data ) {
-            $("#roomid").val(data);
-        });
  
  });
 </script>

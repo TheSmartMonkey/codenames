@@ -13,6 +13,7 @@ socket.on('setplayer', function(playerdata) {
         console.log(playerdata);
         datatable.setRole(playerdata.name,playerdata.role);
         datatable.setTeam(playerdata.name,playerdata.team);
+        datatable.setStatus(playerdata.name,playerdata.isReady);
     });
 
 socket.on('newplayer', function(playerdata) {
@@ -20,6 +21,15 @@ socket.on('newplayer', function(playerdata) {
         loadTable();
     });
 
+socket.on('deleteplayer', function(playerdata) {
+        console.log(playerdata);
+        if (playerdata["username"]==username) {
+            alert("user removed");
+            location.href='index.html';
+        } else {
+            loadTable();
+        }
+    });
 
 socket.on('startgame', function(playerdata) {
         console.log(playerdata);
@@ -47,7 +57,7 @@ class Datatable {
         this.hideAdminCommandCard();
     }
 
-    adminMemberComponent(pseudo, avatar, permission, element) {
+    adminMemberComponent(pseudo, avatar, permission, role,team,isReady, element) {
         element.innerHTML +=
             '<tr id="' + pseudo + '">' +
                 '<td id="user-list">' +
@@ -59,32 +69,32 @@ class Datatable {
                 '</td>' +
                 '<td id="role-list">' +
                     '<select id="roles-dropdown-' + pseudo + '" onchange="datatable.changeRole(\'' + pseudo + '\')">' +
-                        '<option value="spymaster">Spymaster</option>' +
-                        '<option value="player">Player</option>' +
+                        '<option value="spymaster"'+(role==="spymaster"?'selected="selected"':' ')+'>Spymaster</option>' +
+                        '<option value="player"'+(role==="player"?'selected="selected"':' ')+'>Player</option>' +
                     '</select>' +
                 '</td>' +
                 '<td id="team-list">' +
                     '<select id="team-dropdown-' + pseudo + '" onchange="datatable.changeTeam(\'' + pseudo + '\')">' +
-                        '<option value="blue">Blue</option>' +
-                        '<option value="red">Red</option>' +
+                        '<option value="blue"'+(team==="blue"?'selected="selected"':' ')+'>Blue</option>' +
+                        '<option value="red"'+(team==="red"?'selected="selected"':' ')+'>Red</option>' +
                     '</select>' +
                 '</td>' +
                 '<td id="ready-list">' +
-                    '<div class="container">' +
-                        '<div class="round" onclick="datatable.setStatus(\'' + pseudo + '\')">' +
-                            '<input type="checkbox" id="checkbox-' + pseudo + '" checked/>' +
+                '<div class="container" style="display:'+(pseudo===username?'inline':'none')+'">' +
+                '<div class="round" onclick="datatable.changeStatus(\'' + pseudo + '\')">' +
+                            '<input type="checkbox" id="checkbox-' + pseudo + '" '+(isReady?'checked':'')+'/>' +
                             '<label for="checkbox-' + pseudo + '"></label>' +
                         '</div>' +
                     '</div>' +
                 '</td>' +
-                '<td id="status-list"><span id="status-' + pseudo + '">Ready</span></td>' +
-                '<td id="action-list" onclick="">' +
+                '<td id="status-list"><span id="status-' + pseudo + '">'+(isReady?'Ready':'Not Ready')+'</span></td>' +
+                '<td id="action-list" onclick="datatable.deletePlayer(\'' + pseudo + '\')">' +
                     '<img class="d-inline-block align-top" src="../assets/icones/delete.png" />' +
                 '</td>' +
             ' </tr>';
     }
 
-    memberComponent(pseudo, avatar, permission, role, team, element) {
+    memberComponent(pseudo, avatar, permission, role, team, isReady, element) {
         element.innerHTML +=
             '<tr id="' + pseudo + '">' +
                 '<td id="user-list">' +
@@ -97,17 +107,15 @@ class Datatable {
                 '<td id="role-list-' + pseudo + '">' + role + '</td>' +
                 '<td id="team-list-' + pseudo + '">' + team + '</td>' +
                 '<td id="ready-list">' +
-                    '<div class="container">' +
-                        '<div class="round" onclick="datatable.setStatus(\'' + pseudo + '\')">' +
-                            '<input type="checkbox" id="checkbox-' + pseudo + '" />' +
+                    '<div class="container" style="display:'+(pseudo===username?'inline':'none')+'">' +
+                        '<div class="round" onclick="datatable.changeStatus(\'' + pseudo + '\')">' +
+                        '<input type="checkbox" id="checkbox-' + pseudo + '" '+(isReady?'checked':'')+'/>' +
                             '<label for="checkbox-' + pseudo + '"></label>' +
                         '</div>' +
-                    '</div>' +
+                    '</div>' +  
                 '</td>' +
-                '<td id="status-list"><span id="status-' + pseudo + '">Not Ready</span></td>' +
-                '<td id="action-list" onclick="">' +
-                    '<img class="d-inline-block align-top" src="../assets/icones/delete.png" />' +
-                '</td>' +
+                '<td id="status-list"><span id="status-' + pseudo + '">'+(isReady?'Ready':'Not Ready')+'</span></td>' +
+
             ' </tr>';
     }
 
@@ -128,14 +136,9 @@ class Datatable {
         document.execCommand("copy");
     }
 
-    setStatus(pseudo) {
+    changeStatus(pseudo) {
         const ready = document.getElementById("checkbox-" + pseudo);
-        const status = document.getElementById("status-" + pseudo);
-        if (ready.checked == true) {
-            status.innerHTML = "Ready";
-        } else {
-            status.innerHTML = "Not Ready";
-        }
+        socket.emit("changestatus",{"username":pseudo,"roomid":roomid,"isReady":ready.checked});
     }
 
     changeRole(pseudo) {
@@ -161,6 +164,20 @@ class Datatable {
             teamobj.innerHTML = team;
         }
     }
+
+    setStatus(pseudo,isReady) {
+        const statusobj = document.getElementById('status-' + pseudo);
+        if (isReady) {
+            statusobj.innerHTML = "Ready";
+        } else {
+            statusobj.innerHTML = "Not Ready";
+        }
+    }
+
+    deletePlayer(pseudo) {
+        socket.emit("deleteplayer",{"username":pseudo,"roomid":roomid});
+    }
+
 }
 
 
@@ -180,6 +197,9 @@ function loadTable() {
                         player.name,
                         player.avatar,
                         permission,
+                        player.role,
+                        player.team,
+                        player.isReady==="true",
                         tableBody
                     );
                 } else {
@@ -189,6 +209,7 @@ function loadTable() {
                         permission,
                         player.role,
                         player.team,
+                        player.isReady==="true",
                         tableBody
                     );
                 }
@@ -203,5 +224,21 @@ function selectLanguage(selectlanguage) {
 }
 
 function startgame() {
-    socket.emit("newgame",{"roomid":roomid,"language":language});
-}
+    getRequest("/srv/getplayers/"+roomid,'json') 
+        .then(players => {
+            if (!players.reduce((all,player)=> (all && player.isReady),true)) {
+                alert("Please wait for all players to be ready to start the game")
+            } else if (!players.reduce((any,player)=> (any || (player.team=="blue" && player.role=="spymaster")),false)) {
+                alert("No spymaster for blue team")
+            } else if (!players.reduce((any,player)=> (any || (player.team=="red" && player.role=="spymaster")),false)) {
+                alert("No spymaster for red team")
+            } else if (!players.reduce((any,player)=> (any || (player.team=="blue" && player.role=="player")),false)) {
+                alert("No player for blue team")
+            } else if (!players.reduce((any,player)=> (any || (player.team=="red" && player.role=="player")),false)) {
+                alert("No player for red team")
+            } else {
+                socket.emit("newgame",{"roomid":roomid,"language":language});
+            }
+        })
+       
+    }

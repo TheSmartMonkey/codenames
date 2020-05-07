@@ -46,7 +46,7 @@ class Board {
                 alert("The "+turn+" team starts");
             }
         });
-        /*
+        
         if (role=="spymaster") {
             document.getElementById('game-clue').innerHTML+=
                 '<label>Clue:</label>'
@@ -69,7 +69,7 @@ class Board {
                 +'<label>In:</label>'
                 +'<p id="cluecount"></p>';
         }
-        */
+        
 
     }
 

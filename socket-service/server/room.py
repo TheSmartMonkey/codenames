@@ -11,11 +11,15 @@ class Room(object):
     def addPlayer(self,playername,avatar,isAdmin):
         self.players[playername]=SimpleNamespace(
                 name=playername,
-                avatar=avatar,team="blue",
+                avatar=avatar,
+                team="blue",
                 isAdmin=isAdmin,
                 role="spymaster",
-                score=0)
-    
+                isReady=isAdmin)
+
+    def deletePlayer(self,playername):
+        del self.players[playername]
+
     def assignTeam(self,playername,team):
         self.players[playername].team=team
         return self.players[playername].__dict__
@@ -30,6 +34,10 @@ class Room(object):
     def getPlayers(self):
         return [player.__dict__ for player in self.players.values()]
     
+    def changePlayerStatus(self,playername,isReady):
+        self.players[playername].isReady=isReady
+        return self.players[playername].__dict__
+
     def createGame(self,language):
         self.game=CodenamesGame(language)
         return self.game

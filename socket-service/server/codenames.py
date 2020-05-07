@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request,send_from_directory
+from flask import Flask, render_template, jsonify, request,send_file,redirect
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
 
 from room import Room
@@ -9,9 +9,13 @@ app = Flask(__name__,static_folder="../../",static_url_path="/site/codenames")
 socketio = SocketIO(app)
 
 
-@app.route('/srv/test')
+@app.route('/')
 def index():
-    return send_from_directory('../static','index.html')
+    return redirect('/site/codenames/view/index.html')
+
+@app.route('/test')
+def test():
+    return send_file('../static/index.html')
 
 @app.route('/srv/newroom')
 def newroom():
@@ -29,6 +33,7 @@ def handle_newgame(roomid,language):
 @app.route('/srv/addplayer',methods=["POST"])
 def handle_addplayer():
     data = request.get_json()
+    print("addplayer",data)
     username = data['username']
     roomid = data['roomid']
     avatar = data['avatar']
@@ -69,7 +74,8 @@ def on_leave(data):
     roomid = data['roomid']
     leave_room(roomid)
     print(username + ' has quit the room:'+roomid)
-    emit("goneplayer",{"username":username},room=roomid)
+    rooms[roomid].deletePlayer(username)
+    emit("deleteplayer",{"username":username},room=roomid)
 
 @socketio.on('newgame')
 def on_newgame(data):
@@ -108,6 +114,25 @@ def on_assignteam(data):
     team=data["team"]
     playerdata=rooms[roomid].assignTeam(username,team)
     emit("setplayer", playerdata,room=roomid)
+
+@socketio.on('changestatus')
+def on_changestatus(data):
+    print("changestatus",data)
+    roomid = data['roomid']
+    username=data["username"]
+    isReady=data["isReady"]
+    playerdata=rooms[roomid].changePlayerStatus(username,isReady)
+    emit("setplayer", playerdata,room=roomid)
+
+@socketio.on('deleteplayer')
+def handle_deleteplayer(data):
+    print('deleting player ',data)
+    username = data['username']
+    roomid = data['roomid']
+    rooms[roomid].deletePlayer(username)
+    emit("deleteplayer",{"username":username},room=roomid)
+
+
 
 if __name__ == '__main__':
     socketio.run(app,host="localhost",port=8989)

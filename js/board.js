@@ -1,9 +1,11 @@
-var roomid = sessionStorage.getItem("roomid");
-var username = sessionStorage.getItem("username");
-var turn={team:"",role:"spymaster"};
+let roomid = sessionStorage.getItem("roomid");
+let username = sessionStorage.getItem("username");
+let turn={team:"",role:"spymaster"};
 
 let role = sessionStorage.getItem("role");
 let team = sessionStorage.getItem("team");
+
+document.getElementById("game-team").innerHTML=role;
 
 let socket = io();
 socket.on('turnedcard', function(data) {
@@ -12,12 +14,14 @@ socket.on('turnedcard', function(data) {
         board.turnCard(word);
         scores=data["scores"];
         board.setScores(scores);
-        turn=data["turn"];
     });
 
-socket.on('giveclue', function(data) {
+socket.on('cluegiven', function(data) {
         console.log(data);
         clue=data["clue"];
+        cluecount=data["cluecount"];
+        turn.role="player";
+        board.setTurn();
         board.setClue(clue,cluecount);
     });
 
@@ -49,11 +53,20 @@ class Board {
         getRequest('/srv/getscores/'+roomid,'json')
         .then(scores => {
             this.setScores(scores);
-            alert("The "+turn.team+" team starts");
+            // alert("The "+turn.team+" team plays");
         });
         
-        if (role=="spymaster" && turn.role=="spymaster") {
-            document.getElementById('game-clue').innerHTML+=
+        this.setTurn();
+
+    }
+
+    setTurn() {
+        const scoreTurn = document.getElementById('game-turn');
+        scoreTurn.className=turn.team+"-team score-team";
+        scoreTurn.innerHTML=(turn.team==team && turn.role==role)?"Your turn":"Wait";
+
+        if (role=="spymaster" && turn.role=="spymaster" && turn.team==team) {
+            document.getElementById('game-clue').innerHTML=
                 '<label>Clue:</label>'
                 +'<input id="clue" type="text" size="20"/>'
                 +'<label>In:</label>'
@@ -68,22 +81,23 @@ class Board {
                 +'<button type="submit" onclick="board.giveClue()">Go</button>';
         }
         else {
-            document.getElementById('game-clue').innerHTML+=
+            document.getElementById('game-clue').innerHTML=
                 '<label>Clue:</label>'
                 +'<p id="clue"></p>'
                 +'<label>In:</label>'
                 +'<p id="cluecount"></p>';
         }
-        
-
+            
     }
-
     // Rotate the card
     clickCard(word) {
-        if ((role=="player") && (team==turn)) {
+        if ((role=="player") && (turn.team==team) && (turn.role=="player") ) {
             socket.emit("turncard",{"roomid":roomid,"team":team,"word":word});
             this.turnCard(word);
-        } else alert("You cannot play at this time")
+        } else if ((role=="spymaster") && (turn.team==team) && (turn.role=="spymaster"))
+            alert("You need to enter a clue")
+        else 
+            alert("You cannot play at this time")
 
     }
 
@@ -98,39 +112,46 @@ class Board {
         scoreBlue.innerHTML = scores.scores.blue;
         scoreRed.innerHTML = scores.scores.red;
         if (turn.team != scores.turn.team) {
-            this.changeTurn(scores.turn)
+            turn=scores.turn;
+            this.setTurn();
+
         }
 
-        if (scores.blue==0) {
-            document.getElementById('game-score').innerHTML("<p>Blue wins</p>"+buttonCode)
+        this.setClue(scores.clue,scores.cluecount);
+        
+        if (scores.scores.blue==0) {
+            alert("Blue wins");
+            location.href='room.html';      
         }
-        if (scores.red==0) {
-            document.getElementById('game-score').innerHTML("<p>Red wins</p>"+buttonCode)
+        if (scores.scores.red==0) {
+            alert("Red wins");
+            location.href='room.html';      
         }
     }
 
     giveClue() {
         const clueObj = document.getElementById('clue');
         const cluecountObj = document.getElementById('cluecount');
-        socket.emit("giveclue",{"roomid":roomid,"team":team,"clue":clueObj.value,"cluecount":cluecountObj.value});
-
+        if (clueObj.value!="")
+            socket.emit("giveclue",{"roomid":roomid,"team":team,"clue":clueObj.value,"cluecount":cluecountObj.value});
+        else
+            alert("Please enter a code name")
     }
     setClue(clue,cluecount) {
+        const gameClueObj=document.getElementById('game-clue')
         const clueObj = document.getElementById('clue');
         const cluecountObj = document.getElementById('cluecount');
-        if (clueObj) {
+        if (clueObj.tagName=="INPUT") {
+            clueObj.value=clue;
+            cluecountObj.value=cluecount;
+        }
+        else {
+            gameClueObj.style.visibility=(clue=="")?"hidden":"visible";
             clueObj.innerHTML=clue;
             cluecountObj.innerHTML=cluecount;
-        }
+            }
     }
 
-    changeTurn(newturn) {
-        const scoreTurn = document.getElementById('game-turn');
-        turn = newturn;
-        scoreTurn.className=turn.team+"-team score-team";
-        //alert("Now the team "+scores.turn+" plays");
-
-    }
 
     cardComponent(word, team,role, element) {
         if (role=="spymaster") {

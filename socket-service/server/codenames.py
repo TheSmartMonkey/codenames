@@ -60,6 +60,13 @@ def handle_getsocres(roomid):
     response=rooms[roomid].game.getScores()
     return jsonify(response), 200
 
+@app.route('/srv/dump/<roomid>')
+def handle_dump(roomid):
+    game=rooms[roomid].game
+    response=game.dump()
+    return jsonify(response), 200
+
+
 @socketio.on('join')
 def on_join(data):
     username = data['username']
@@ -101,10 +108,12 @@ def on_turncard(data):
 def on_clue(data):
     print("clue",data)
     roomid = data['roomid']
+    team=data["team"]
     clue=data["clue"]
     cluecount=int(data["cluecount"])
     game=rooms[roomid].game
     game.setClue(clue,cluecount)
+    emit("cluegiven", {"team":team,"clue":clue,"cluecount":cluecount},room=roomid)
 
 @socketio.on('assignrole')
 def on_assignrole(data):

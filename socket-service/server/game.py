@@ -54,6 +54,8 @@ class CodenamesGame(object):
         else:    
             self.turn["team"]=self.team_names[0]
         self.turn["role"]="spymaster"
+        self.clue=""
+        self.cluecount=1
 
     def getScore(self,team):
         return len([w for w,t in self.words.items() if t==team and w not in self.found])
@@ -64,3 +66,10 @@ class CodenamesGame(object):
                 "clue":self.clue,
                 "cluecount":self.cluecount
                 }
+
+    def dump(self):
+        return {"state":self.getScores(),
+                "words":self.words,
+                "found":list(self.found)
+                }
+

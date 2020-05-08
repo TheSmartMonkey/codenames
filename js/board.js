@@ -1,6 +1,6 @@
 var roomid = sessionStorage.getItem("roomid");
 var username = sessionStorage.getItem("username");
-var turn="";
+var turn={team:"",role:"spymaster"};
 
 let role = sessionStorage.getItem("role");
 let team = sessionStorage.getItem("team");
@@ -12,6 +12,13 @@ socket.on('turnedcard', function(data) {
         board.turnCard(word);
         scores=data["scores"];
         board.setScores(scores);
+        turn=data["turn"];
+    });
+
+socket.on('giveclue', function(data) {
+        console.log(data);
+        clue=data["clue"];
+        board.setClue(clue,cluecount);
     });
 
 socket.emit("join",{"username":username,"roomid":roomid});
@@ -42,12 +49,10 @@ class Board {
         getRequest('/srv/getscores/'+roomid,'json')
         .then(scores => {
             this.setScores(scores);
-            if (team==turn) {
-                alert("The "+turn+" team starts");
-            }
+            alert("The "+turn.team+" team starts");
         });
         
-        if (role=="spymaster") {
+        if (role=="spymaster" && turn.role=="spymaster") {
             document.getElementById('game-clue').innerHTML+=
                 '<label>Clue:</label>'
                 +'<input id="clue" type="text" size="20"/>'
@@ -60,7 +65,7 @@ class Board {
                 +'    <option value="5">5</option>'
                 +'    <option value="6">6</option>'
                 +'</select>'
-                +'<button type="submit">Go</button>';
+                +'<button type="submit" onclick="board.giveClue()">Go</button>';
         }
         else {
             document.getElementById('game-clue').innerHTML+=
@@ -92,7 +97,7 @@ class Board {
         const scoreRed = document.getElementById('game-score-red');
         scoreBlue.innerHTML = scores.scores.blue;
         scoreRed.innerHTML = scores.scores.red;
-        if (turn != scores.turn) {
+        if (turn.team != scores.turn.team) {
             this.changeTurn(scores.turn)
         }
 
@@ -102,13 +107,27 @@ class Board {
         if (scores.red==0) {
             document.getElementById('game-score').innerHTML("<p>Red wins</p>"+buttonCode)
         }
-        
+    }
+
+    giveClue() {
+        const clueObj = document.getElementById('clue');
+        const cluecountObj = document.getElementById('cluecount');
+        socket.emit("giveclue",{"roomid":roomid,"team":team,"clue":clueObj.value,"cluecount":cluecountObj.value});
+
+    }
+    setClue(clue,cluecount) {
+        const clueObj = document.getElementById('clue');
+        const cluecountObj = document.getElementById('cluecount');
+        if (clueObj) {
+            clueObj.innerHTML=clue;
+            cluecountObj.innerHTML=cluecount;
+        }
     }
 
     changeTurn(newturn) {
         const scoreTurn = document.getElementById('game-turn');
         turn = newturn;
-        scoreTurn.className=turn+"-team score-team";
+        scoreTurn.className=turn.team+"-team score-team";
         //alert("Now the team "+scores.turn+" plays");
 
     }

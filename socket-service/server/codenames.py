@@ -93,9 +93,18 @@ def on_turncard(data):
     team=data["team"]
     word=data["word"]
     game=rooms[roomid].game
-    result=game.turnCard(team,word)
+    game.turnCard(team,word)
     scores=game.getScores()
-    emit("turnedcard", {"team":team,"word":word,"result":result,"scores":scores},room=roomid)
+    emit("turnedcard", {"team":team,"word":word,"scores":scores},room=roomid)
+
+@socketio.on('giveclue')
+def on_clue(data):
+    print("clue",data)
+    roomid = data['roomid']
+    clue=data["clue"]
+    cluecount=int(data["cluecount"])
+    game=rooms[roomid].game
+    game.setClue(clue,cluecount)
 
 @socketio.on('assignrole')
 def on_assignrole(data):

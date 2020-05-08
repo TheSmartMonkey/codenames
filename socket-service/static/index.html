@@ -1,28 +1,25 @@
 <html>
 <body>
 <script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
 <script type="text/javascript" charset="utf-8">
+ function buildSelect(options,selected) {
+    var html="<select>"
+    Object.entries(options).forEach(([key,value])=>
+            html+='<option value="'+key+'" '+(selected==key?'selected="selected"':' ')+'>'+value+'</option>'
+            )
+    html+='</select>';
+    return html;
+
+ }
  $(document).ready(function() {
     var socket = io({transports: ['websocket']});
 
-    socket.on("*", function(msg) {
-        $("#log").append('<p>'+msg+'</p>');
-        next();
-        });
-
     socket.on('newplayer', function(msg) {
             $("#log").append('<p>'+msg.username+' joined the room</p>');
+            table.row.add(msg);
         });
-
-    socket.on('resetgame', function(msg) {
-        $.getJSON( "/card/"+$("#roomid").val()+"/spymaster", 
-            function( carddata ) {
-                carddata.forEach(card => {
-                    $("#game").append('<div>'+card.word+'</div>');
-                });
-        });
-    });
 
 
     $("form#join").submit(function(event){
@@ -30,6 +27,36 @@
             return false;
             });
 
+    var admin=true;
+    var table = $('#players').DataTable({
+        "columns": [ 
+            { "data": "name"},
+            { "data":"avatar",
+              "render": function ( data, type, row, meta ) {
+                        return '<img src="/site/codenames/assets/icones/' + data + '.png" />';
+                        }
+                    },
+            { "data":"role",
+              "render": function ( data, type, row, meta ) {
+                  if (admin)
+                        return buildSelect({spymaster:"Spymaster",player:"Player"},data)
+                    else return data;
+                        }
+                    },
+            { "data":"team",
+              "render": function ( data, type, row, meta ) {
+                    if (admin)
+                        return buildSelect({blue:"Blue",red:"Red"},data);
+                    else return data;
+                        }
+                    }
+
+            ],
+        "ajax": "/srv/getplayers/"+$("#roomid").val()
+
+        });
+
+    
  
  });
 </script>
@@ -49,6 +76,15 @@
 
 <div id="log">ready</div>
 <div id="game"></div>
+<table id="players" class="display">
+    <thead>
+        <th>User</th>
+        <th>Avatar</th>
+        <th>Role</th>
+        <th>Team</th>
+    </thead>
+</table>
+
 
 </body>
 </html>

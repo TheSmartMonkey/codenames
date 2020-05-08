@@ -47,7 +47,7 @@ socket.emit("join",{"username":username,"roomid":roomid});
 
 class Datatable {
     constructor() {
-        this.table = $('#usetTable').DataTable({
+        this.table = $('#userTable').DataTable({
             "paging": false,
             "ordering": false,
             "info": false,

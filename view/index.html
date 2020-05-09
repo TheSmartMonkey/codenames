@@ -19,45 +19,39 @@
 
     <h1 class="center">Code Names</h1>
     <div class="center">
-        <button class="button button-validate" id="create-game">
+        <button class="button button-validate" id="create-game" onclick="m.open()">
             Create a game
         </button>
     </div>
 
-    <div id="my-modal" class="modal">
-        <!-- Modal content -->
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="close">&times;</span>
-                <h2 id="create-title">Create Game</h2>
-            </div>
-            <div class="modal-body">
-                <label for="fname">Pseudo</label>
-                <input type="text" id="fname" name="firstname" placeholder="Your name...">
-
-                <label for="avatar">Avatar</label>
-                <select id="avatar" name="avatar">
-                    <option value="man">man</option>
-                    <option value="woman">woman</option>
-                    <option value="dog">dog</option>
-                    <option value="cat">cat</option>
-                </select>
-
-                <!-- Submit -->
-                <div class="button-right separator">
-                    <button class="button button-validate" id="create-game" onclick="createUser()">
-                        Create
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div id="modal-container" class="modal"></div>
 
     <!-- Scripts -->
     <script src="../js/module.js"></script>
     <script src="../js/index.js"></script>
     <script>
         includeHTML();
+        const m = new Modal();
+        const modalObject = m.display('Create Game', 
+            '<label for="fname">Pseudo</label>' +
+            '<input type="text" id="fname" name="firstname" placeholder="Your name...">' +
+            '<label for="avatar">Avatar</label>' +
+            '<select id="avatar" name="avatar">' +
+                '<option value="man">man</option>' +
+                '<option value="woman">woman</option>' +
+                '<option value="dog">dog</option>' +
+                '<option value="cat">cat</option>' +
+            '</select>', 
+            'Create', 
+            'createUser()');
+        m.modal.innerHTML = modalObject
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == m.modal) {
+                m.modal.style.display = "none";
+            }
+        }
     </script>
 
     <!-- Footer -->

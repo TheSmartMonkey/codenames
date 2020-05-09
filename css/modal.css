@@ -17,7 +17,7 @@
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-  /* Modal Content */
+/* Modal Content */
 .modal-content {
     position: relative;
     background-color: #fefefe;
@@ -32,7 +32,7 @@
     animation-duration: 0.4s
 }
 
-  /* Add Animation */
+/* Add Animation */
 @-webkit-keyframes animatetop {
     from {top:-300px; opacity:0} 
     to {top:0; opacity:1}
@@ -43,16 +43,16 @@
     to {top:0; opacity:1}
 }
 
-  /* The Close Button */
-.close {
+/* The Close Button */
+.close-modal {
     color: white;
     float: right;
     font-size: 28px;
     font-weight: bold;
 }
 
-.close:hover,
-.close:focus {
+.close-modal:hover,
+.close-modal:focus {
     color: #000;
     text-decoration: none;
     cursor: pointer;

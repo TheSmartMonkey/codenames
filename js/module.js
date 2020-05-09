@@ -1,6 +1,6 @@
 //* UTILITY functions
-// HTTP request handler
-function getRequest(url,responseType) {
+// GET HTTP request handler
+function getRequest(url, responseType) {
     const promise = new Promise((resolve, reject) => {
         const Http = new XMLHttpRequest();
         Http.open('GET', url);
@@ -15,7 +15,8 @@ function getRequest(url,responseType) {
     return promise;
 }
 
-function postRequest(url,data,responseType) {
+// POST HTTP request handler
+function postRequest(url, data, responseType) {
     const promise = new Promise((resolve, reject) => {
         const Http = new XMLHttpRequest();
         Http.open('POST', url);
@@ -31,9 +32,9 @@ function postRequest(url,data,responseType) {
     return promise;
 }
 
-
+// Include HTML files
 function includeHTML() {
-    var htmlElement, i, element, file, xhttp;
+    let htmlElement, i, element, file, xhttp;
     // Loop through a collection of all HTML elements
     htmlElement = document.getElementsByTagName("*");
     for (i = 0; i < htmlElement.length; i++) {
@@ -57,5 +58,46 @@ function includeHTML() {
             // Exit the function
             return;
         }
+    }
+}
+
+//* MODAL
+// Game modal alert popups
+class Modal {
+    constructor() {
+        this.modal = document.getElementById("modal-container");
+        this.submitButton = document.getElementById("submit-button");
+        this.closeAction = document.getElementsByClassName("close-modal")[0];
+    }
+
+    // Display the modal
+    display(modalTitle, contentBody, buttonTitle, actionOnClick) {
+        let modalAlert = 
+            '<div class="modal-content">' +
+                '<div class="modal-header">' +
+                    '<span class="close-modal" onclick="m.close()">&times;</span>' +
+                    '<h2 id="modal-title">' + modalTitle + '</h2>' +
+                '</div>' +
+                '<div class="modal-body">' +
+                    contentBody +
+                    '<div class="button-right separator">' +
+                        '<button class="button button-validate" id="submit-button" onclick="' + actionOnClick + '">' +
+                            buttonTitle +
+                        '</button>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+
+        return modalAlert;
+    }
+
+    // When the user clicks the button, open the modal 
+    open() {
+        this.modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    close() {
+        this.modal.style.display = "none";
     }
 }

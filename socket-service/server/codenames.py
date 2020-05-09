@@ -38,8 +38,8 @@ def handle_addplayer():
     roomid = data['roomid']
     avatar = data['avatar']
     isAdmin = data['isAdmin']
-    rooms[roomid].addPlayer(username,avatar,isAdmin)
-    return "user added", 200
+    player=rooms[roomid].addPlayer(username,avatar,isAdmin)
+    return jsonify(player), 200
 
 @app.route('/srv/getplayers/<roomid>')
 def handle_getplayer(roomid):
@@ -60,12 +60,14 @@ def handle_getsocres(roomid):
     response=rooms[roomid].game.getScores()
     return jsonify(response), 200
 
-@app.route('/srv/dump/<roomid>')
-def handle_dump(roomid):
-    game=rooms[roomid].game
-    response=game.dump()
+@app.route('/srv/dump')
+def handle_dump():
+    response=dict()
+    for roomId,room in rooms.items():
+        response[roomId]={"players":room.getPlayers()}
+        if room.game is not None:
+            response[roomId]["game"]=room.game.dump()
     return jsonify(response), 200
-
 
 @socketio.on('join')
 def on_join(data):
@@ -100,9 +102,12 @@ def on_turncard(data):
     team=data["team"]
     word=data["word"]
     game=rooms[roomid].game
-    game.turnCard(team,word)
-    scores=game.getScores()
-    emit("turnedcard", {"team":team,"word":word,"scores":scores},room=roomid)
+    result,newteam=game.turnCard(team,word)
+    if result!="":
+        scores=game.getScores()
+        print(result,newteam,scores)
+        emit(result, {"team":newteam,"word":word,"scores":scores},room=roomid)
+
 
 @socketio.on('giveclue')
 def on_clue(data):

@@ -1,6 +1,8 @@
 import uuid
 from types import SimpleNamespace
 from game import CodenamesGame
+from random import sample
+
 
 class Room(object):
     def __init__(self):
@@ -9,13 +11,34 @@ class Room(object):
         self.game=None
     
     def addPlayer(self,playername,avatar,isAdmin):
-        self.players[playername]=SimpleNamespace(
-                name=playername,
-                avatar=avatar,
-                team="blue",
-                isAdmin=isAdmin,
-                role="spymaster",
-                isReady=isAdmin)
+        if playername not in self.players:
+            team=sample(("blue","red"),1)[0]
+            if len(self.players)==0:
+                role=sample(("spymaster","player"),1)[0]
+            elif self.teamHasRole(team,"spymaster"):
+                if self.teamHasRole(team,"player"):
+                    team=[t for t in ("blue","red") if t!=team][0]
+                    if self.teamHasRole(team,"spymaster"):
+                        role="player"
+                    else:
+                        role="spymaster"
+                else:
+                    role="player"
+            else:
+                role="spymaster"
+
+            self.players[playername]=SimpleNamespace(
+                    name=playername,
+                    avatar=avatar,
+                    team=team,
+                    isAdmin=isAdmin,
+                    role=role,
+                    isReady=isAdmin)
+
+        return self.players[playername]
+
+    def teamHasRole(self,team,role):
+        return len([p for p in self.players.values() if p.team==team and p.role==role])>0
 
     def deletePlayer(self,playername):
         del self.players[playername]

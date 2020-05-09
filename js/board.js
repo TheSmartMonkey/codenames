@@ -5,7 +5,8 @@ let turn={team:"",role:"spymaster"};
 let role = sessionStorage.getItem("role");
 let team = sessionStorage.getItem("team");
 
-document.getElementById("game-team").innerHTML=role;
+document.getElementById("team-info").innerHTML=team;
+document.getElementById("role-info").innerHTML=role;
 
 let socket = io();
 socket.on('turnedcard', function(data) {
@@ -25,8 +26,30 @@ socket.on('cluegiven', function(data) {
         board.setClue(clue,cluecount);
     });
 
+socket.on('hitbomb', function(data) {
+        console.log(data);
+        teamloose=data["team"];
+        word=data["word"];
+        board.turnCard(word);
+        setTimeout(() => alert(teamloose+" hit the bomb and looses the game"),1000);
+        setTimeout(endsGame, 3000);
+    });
+
+socket.on('wingame', function(data) {
+        console.log(data);
+        teamwin=data["team"];
+        word=data["word"];
+        board.turnCard(word);
+        alert(teamwin+" wins the game");
+        setTimeout(endsGame, 3000);
+    });
+
+
 socket.emit("join",{"username":username,"roomid":roomid});
 
+function endsGame() {
+    location.href='room.html';
+}
 
 class Board {
     constructor() {
@@ -35,8 +58,6 @@ class Board {
 
     // Creates the 5 x 5 board
     createBoard() {
-        const myteam = document.getElementById('game-team');
-        myteam.className=team+"-team score-team"
         getRequest('/srv/getcard/'+roomid+"/"+username,'json')
             .then(cards => {
                 
@@ -61,9 +82,7 @@ class Board {
     }
 
     setTurn() {
-        const scoreTurn = document.getElementById('game-turn');
-        scoreTurn.className=turn.team+"-team score-team";
-        scoreTurn.innerHTML=(turn.team==team && turn.role==role)?"Your turn":"Wait";
+        document.getElementById('game-turn').innerHTML=turn.team;
 
         if (role=="spymaster" && turn.role=="spymaster" && turn.team==team) {
             document.getElementById('game-clue').innerHTML=
@@ -71,7 +90,7 @@ class Board {
                 +'<input id="clue" type="text" size="20"/>'
                 +'<label>In:</label>'
                 +'<select id="cluecount">'
-                +'    <option value="1">1</option>'
+                +'    <option value="1" selected="selected">1</option>'
                 +'    <option value="2">2</option>'
                 +'    <option value="3">3</option>'
                 +'    <option value="4">4</option>'
@@ -83,9 +102,9 @@ class Board {
         else {
             document.getElementById('game-clue').innerHTML=
                 '<label>Clue:</label>'
-                +'<p id="clue"></p>'
+                +'<span id="clue"></span>'
                 +'<label>In:</label>'
-                +'<p id="cluecount"></p>';
+                +'<span id="cluecount"></span>';
         }
             
     }
@@ -119,14 +138,6 @@ class Board {
 
         this.setClue(scores.clue,scores.cluecount);
         
-        if (scores.scores.blue==0) {
-            alert("Blue wins");
-            location.href='room.html';      
-        }
-        if (scores.scores.red==0) {
-            alert("Red wins");
-            location.href='room.html';      
-        }
     }
 
     giveClue() {
@@ -154,6 +165,15 @@ class Board {
 
 
     cardComponent(word, team,role, element) {
+        let spyfile="";
+        if (team=="grey") {
+            spyfile="Neutre"+(Math.floor(Math.random() * 9)+1)+".png"
+        } else if (team=="bomb") {
+            spyfile="Mort.png";
+        } else {
+            spyfile="Spy"+(Math.floor(Math.random() * 5)+1)+".png";
+        }     
+
         if (role=="spymaster") {
             element.innerHTML +=
             '<div class="flip-card" onclick="board.clickCard(\'' + word + '\')">' +
@@ -162,7 +182,7 @@ class Board {
                         '<h2>' + word + '</h2>' +
                     '</div>' +
                     '<div class="flip-card-back flip-card-back-' + team + '">' +
-                        '<h2>' + word + '</h2>' +
+                        '<img src="../assets/icones/'+spyfile+'"/>'+
                     '</div>' +
                 '</div>' +
             '</div>';
@@ -174,7 +194,7 @@ class Board {
                         '<h2>' + word + '</h2>' +
                     '</div>' +
                     '<div class="flip-card-back flip-card-back-' + team + '">' +
-                        '<h2>' + word + '</h2>' +
+                    '<img src="../assets/icones/'+spyfile+'"/>'+
                     '</div>' +
                 '</div>' +
             '</div>';
@@ -182,4 +202,17 @@ class Board {
     }
 }
 
+function loadTeams() {
+    getRequest("/srv/getplayers/"+roomid,'json')
+        .then(players => {
+            let html={blue:"<ul>",red:"<ul>"}
+            players.forEach(player => {
+                html[player.team]+='<li>'+player.name+'</li>';
+                });
+            html.blue+="</ul>";
+            html.red+="</ul>";
+            document.getElementById("blue-players-column").innerHTML+=html.blue;
+            document.getElementById("red-players-column").innerHTML+=html.red;           
+        });
+}
 

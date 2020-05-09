@@ -30,6 +30,15 @@ header li img {
     text-decoration: none;
 }
 
+header li h2 {
+    color: white;
+    text-align: center;
+    padding: 7px 40px;
+    margin: 2px;
+    margin-top:10px;
+    text-decoration: none;
+}
+
 .nav-link {
     display: block;
     color: white;

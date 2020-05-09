@@ -42,11 +42,23 @@ class CodenamesGame(object):
         self.turn["role"]="player"
 
     def turnCard(self,team,word):
-        self.found.add(word)
-        if self.words[word]!=team or self.cluecount<2:
-            self.nextTeam()
+        if word in self.found:
+            return "",team
+        elif self.words[word]=="bomb":
+            return "hitbomb",team
         else:
-            self.cluecount-=1
+            self.found.add(word)
+            if self.words[word]!=team or self.cluecount<2:
+                self.nextTeam()
+            else:
+                self.cluecount-=1
+
+            winner=[ t for t in self.team_names if self.getScore(t)==0]
+            if len(winner)>0:
+                return "wingame",winner[0]
+            else:
+                return "turnedcard",team
+
 
     def nextTeam(self):
         if self.team_names.index(self.turn["team"]) < len(self.team_names)-1:

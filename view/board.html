@@ -15,26 +15,48 @@
 <body>
     <!-- NavBar -->
     <div w3-include-html="../components/navbar.html"></div>
-
-    <h1>Code Names</h1>
-    <div class="game-info" id="game-score">
-        <div id="game-team" class="score-team" >My Team</div>
-        <div class="score-team">
-            <span id="game-score-blue"></span>
-            &minus; 
-            <span id="game-score-red"></span>
+<main>
+    <div id="blue-players-column" class="player-column">
+        <header>Blue team</header>
+    </div>
+    <div id="center-column">
+        <center>
+        <div class="player-info info">
+            <div class="info-part">
+                <label>Your Team:</label>
+                <span id="team-info"></span>
+            </div>
+            <div class="info-part">
+                <label>Your Role:</label>
+                <span id="role-info"></span>
+            </div>
         </div>
-        <div id="game-turn" class="score-team">Team playing</div>
+        <div class="game-info info">
+            <div class="info-part"> 
+                <label>Turn: </label>
+                <span id="game-turn"></span>
+            </div>
+            <div class="info-part">
+                <label>Score: </label>
+                <span id="game-score-blue"></span>
+                &minus; 
+                <span id="game-score-red"></span>
+            </div>
+        </div>
+        <div class="game-info info">
+            <div id="game-clue"></div>
+        </div>
+        <div class="board" id="board">
+            <div id="column1"></div>
+            <div id="column2"></div>
+            <div id="column3"></div>
+            <div id="column4"></div>
+            <div id="column5"></div>
+        </div>
+        </center>
     </div>
-    <div class="game-info"
-        <div id="game-clue" class="score-clue">
-    </div>
-    <div class="board" id="board">
-        <div id="column1"></div>
-        <div id="column2"></div>
-        <div id="column3"></div>
-        <div id="column4"></div>
-        <div id="column5"></div>
+    <div id="red-players-column" class="player-column">
+        <header>Red team</header>
     </div>
 
     <!-- Script -->
@@ -44,10 +66,12 @@
     <script>
         includeHTML();
         const board = new Board();
+        loadTeams();
     </script>
 
     <!-- Footer -->
     <div w3-include-html="../components/footer.html"></div>
+</main>
 </body>
 
 </html>

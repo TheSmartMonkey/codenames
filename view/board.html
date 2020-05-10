@@ -18,20 +18,15 @@
 <main>
     <div id="blue-players-column" class="player-column">
         <header>Blue team</header>
+        <h3 class="role-team">Spymaster</h3>
+        <ul id="blue-spymaster-team"></ul>
+        <h3 class="role-team">Player</h3>
+        <ul id="blue-player-team"></ul>
+    
     </div>
     <div id="center-column">
         <center>
-        <div class="player-info info">
-            <div class="info-part">
-                <label>Your Team:</label>
-                <span id="team-info"></span>
-            </div>
-            <div class="info-part">
-                <label>Your Role:</label>
-                <span id="role-info"></span>
-            </div>
-        </div>
-        <div class="game-info info">
+        <div class="game-info">
             <div class="info-part"> 
                 <label>Turn: </label>
                 <span id="game-turn"></span>
@@ -43,8 +38,9 @@
                 <span id="game-score-red"></span>
             </div>
         </div>
-        <div class="game-info info">
-            <div id="game-clue"></div>
+        <div class="game-info">
+            <div class="info-part" id="game-clue"> 
+            </div>
         </div>
         <div class="board" id="board">
             <div id="column1"></div>
@@ -57,6 +53,10 @@
     </div>
     <div id="red-players-column" class="player-column">
         <header>Red team</header>
+        <h3 class="role-team">Spymaster</h3>
+        <ul id="red-spymaster-team"></ul>
+        <h3 class="role-team">Player</h3>
+        <ul id="red-player-team"></ul>
     </div>
 
     <!-- Script -->
@@ -64,7 +64,13 @@
     <script src="../js/module.js"></script>
     <script src="../js/board.js"></script>
     <script>
-        includeHTML();
+        includeHTML().then(
+            () => {
+                document.getElementById("navbar").innerHTML+=
+                '<li><div class="nav-link">Your Team: '+team+'</div></li>'+
+                '<li><div class="nav-link">Your Role: '+role+'</div></li>';
+            }
+        );
         const board = new Board();
         loadTeams();
     </script>

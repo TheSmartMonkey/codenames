@@ -43,8 +43,9 @@ header li h2 {
     display: block;
     color: white;
     text-align: center;
-    padding: 14px 2px;
+    padding: 16px 20px;
     text-decoration: none;
+    text-transform: capitalize;
 }
 
 .nav-right {

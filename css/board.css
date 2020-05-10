@@ -7,23 +7,37 @@ main {
 }
 .player-column {
     width:200px;
-    padding:2px;   
+    height:300px;
+    padding:0px;
+    margin:2px;
 }
-
+.player-column div,header {
+    width: 100%;
+    display: inline-block;
+    font-size:18px;
+    padding: 0px;
+}
 .player-column ul {
     list-style-type: none;
-    padding-left: 5px;
-    vertical-align:top;    
-}
+    width: 100%;
+    padding: 0;
+    margin: 0px auto 0;
+  }
 .player-column ul li {
     color: white;
-    text-justify: left;
-    vertical-align:top;
+    display: inline-block;
+    width: 10%;
+    padding: 0px 5px 0;
 }
 .player-column header {
     color: white;
     background-color: var(--sidebar-color);
 
+}
+.role-team {
+    color: white;
+    width:100%;
+    background-color: var(--sidebar-color);
 }
 #blue-players-column {
     background-color: var(--blue-team);
@@ -31,29 +45,38 @@ main {
 #red-players-column {
     background-color: var(--red-team);
 }
-.info {
+.game-info {
     display: flex;
-    color: white;
+    color: black;
     align-items: center;
     text-align: left;
     width:50%;
-    height:40px;
     margin-top:5px;
 }
-.player-info {
-    background-color: #888;
-}
-.game-info {
-    background-color:var(--card-color);
+.game-info div,label,span{
+    color: black;
+    background-color:var(--info-color);
 }
 
-.info label,span {
-    color: white;
+.info-part label,span {
     align-items: center;
     text-align: left;
-    font-size: 20px;  
+    font-size: 18px;  
 }
 
+.info-part {
+    color: var(--background-white);
+    height:45px;
+    width:400px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    border: 3px;
+    border-radius: 5px;
+    margin:5px;
+    transition: transform 2s;
+    text-transform: capitalize;
+} 
 
 /* Board card flip */
 
@@ -69,22 +92,21 @@ main {
     width:160px;
     font-size: 15px;
 }
-.info-part {
-    color: var(--background-white);
-    height:40px;
-    width:50%;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    border: 3px;
-    border-radius: 5px;
-    transition: transform 2s;
-    text-transform: capitalize;
-} 
+#cluecount {
+    width:50px;
+    font-size: 15px;
+}
+
+.blue-turn {
+    color: var(--blue-team);
+}
+.red-turn {
+    color: var(--red-team);
+}
+
 .blue-team {
     background-color: var(--blue-team);
 }
-
 .red-team {
     background-color: var(--red-team);
 }
@@ -98,7 +120,7 @@ main {
     padding:10px;
 } 
 
-label,#clue,button,select {
+#clue,button,select {
     margin:5px;
     padding:5px;
     font-size: 20px;
@@ -127,7 +149,7 @@ h2 {
 
 .flip-card {
     background-color: transparent;
-    width: 200px;
+    width: 180px;
     height: 100px;
     perspective: 1000px;
     vertical-align: middle;

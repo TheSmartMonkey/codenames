@@ -5,8 +5,6 @@ let turn={team:"",role:"spymaster"};
 let role = sessionStorage.getItem("role");
 let team = sessionStorage.getItem("team");
 
-document.getElementById("team-info").innerHTML=team;
-document.getElementById("role-info").innerHTML=role;
 
 let socket = io();
 socket.on('turnedcard', function(data) {
@@ -82,8 +80,8 @@ class Board {
     }
 
     setTurn() {
-        document.getElementById('game-turn').innerHTML=turn.team;
-
+        document.getElementById('game-turn').innerHTML=(turn.team==team?"Your team":"Oppposite team");
+        document.getElementById('game-turn').className=team+"-turn";
         if (role=="spymaster" && turn.role=="spymaster" && turn.team==team) {
             document.getElementById('game-clue').innerHTML=
                 '<label>Clue:</label>'
@@ -205,14 +203,10 @@ class Board {
 function loadTeams() {
     getRequest("/srv/getplayers/"+roomid,'json')
         .then(players => {
-            let html={blue:"<ul>",red:"<ul>"}
             players.forEach(player => {
-                html[player.team]+='<li>'+player.name+'</li>';
-                });
-            html.blue+="</ul>";
-            html.red+="</ul>";
-            document.getElementById("blue-players-column").innerHTML+=html.blue;
-            document.getElementById("red-players-column").innerHTML+=html.red;           
+                document.getElementById(player.team+"-"+player.role+"-team").innerHTML+=
+                    '<li>'+player.name+'</li>';
+            });
         });
 }
 

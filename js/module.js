@@ -31,31 +31,38 @@ function postRequest(url,data,responseType) {
     return promise;
 }
 
-
 function includeHTML() {
-    var htmlElement, i, element, file, xhttp;
-    // Loop through a collection of all HTML elements
-    htmlElement = document.getElementsByTagName("*");
-    for (i = 0; i < htmlElement.length; i++) {
-        element = htmlElement[i];
-        // search for elements with a certain atrribute
-        file = element.getAttribute("w3-include-html");
-        if (file) {
-            // Make an HTTP request using the attribute value as the file name
-            xhttp = new XMLHttpRequest();
+    return new Promise(includeElement);
+
+function includeElement(successCallback, failureCallback) {
+        var includeElements = document.querySelectorAll("div[w3-include-html]");
+        if(includeElements.length>0) {
+            // we include one element at a time 
+            // and consider the promise completed once all elements are inluded
+            var element = includeElements[0];
+            var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
-                if (this.readyState == 4) {
-                    if (this.status == 200) { element.innerHTML = this.responseText; }
-                    if (this.status == 404) { element.innerHTML = "Page not found."; }
-                    // Remove the attribute, and call this function once more
-                    element.removeAttribute("w3-include-html");
-                    includeHTML();
+                    if (this.readyState == 4) {
+                        if (this.status == 200) { 
+                            element.innerHTML = this.responseText; 
+                        }
+                        if (this.status == 404) { 
+                            element.innerHTML = "Page not found.";
+                            failureCallback();
+                        }
+                        // Remove the attribute, and call this function once more
+                        element.removeAttribute("w3-include-html");
+                        includeElement(successCallback, failureCallback);
+                    }
                 }
-            }
-            xhttp.open("GET", file, true);
+            xhttp.open("GET", element.getAttribute("w3-include-html"), true);
             xhttp.send();
-            // Exit the function
-            return;
+        }
+        else {
+            // all elements included: success
+            successCallback();
         }
     }
 }
+
+

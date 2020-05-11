@@ -114,7 +114,8 @@ class Datatable {
                         '</div>' +
                     '</div>' +  
                 '</td>' +
-                '<td id="status-list"><span id="status-' + pseudo + '">'+(isReady?'Ready':'Not Ready')+'</span></td>' +
+                '<td id="status-list"><div onclick="datatable.changeStatus(\'' + pseudo + '\')">' +
+                '<span id="status-' + pseudo + '">'+(isReady?'Ready':'Not Ready')+'</span></div></td>' +
 
             ' </tr>';
     }

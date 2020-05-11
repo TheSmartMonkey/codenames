@@ -46,7 +46,7 @@ table {
 
 .round label {
     background-color: var(--background-white);
-    border: 1px solid #ccc;
+    border: 2px solid #333;
     border-radius: 50%;
     cursor: pointer;
     height: 28px;
@@ -116,6 +116,14 @@ select {
     width: 100%;
 }
 
-input[type=text] {
+
+/** Input and select */
+input[type=text], select {
 	width: 70%;
+	padding: 12px 12px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
 }

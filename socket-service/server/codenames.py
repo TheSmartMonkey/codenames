@@ -6,7 +6,7 @@ rooms=dict()
 
 app = Flask(__name__,static_folder="../../",static_url_path="/site/codenames")
 
-socketio = SocketIO(app)
+socketio = SocketIO(app,cors_allowed_origins="*")
 
 
 @app.route('/')
@@ -39,7 +39,7 @@ def handle_addplayer():
     avatar = data['avatar']
     isAdmin = data['isAdmin']
     player=rooms[roomid].addPlayer(username,avatar,isAdmin)
-    return jsonify(player), 200
+    return jsonify(player.__dict__), 200
 
 @app.route('/srv/getplayers/<roomid>')
 def handle_getplayer(roomid):

@@ -11,11 +11,15 @@ main {
     padding:0px;
     margin:2px;
 }
-.player-column div,header {
+.player-column div {
+    height:30px;
     width: 100%;
-    display: inline-block;
     font-size:18px;
     padding: 0px;
+    margin-bottom:10px;
+    text-indent:5px;
+    color: white;
+    background-color: var(--sidebar-color);
 }
 .player-column ul {
     list-style-type: none;
@@ -25,14 +29,8 @@ main {
   }
 .player-column ul li {
     color: white;
-    display: inline-block;
-    width: 10%;
-    padding: 0px 5px 0;
+    padding: 0px 10px 0;
 }
-.player-column header {
-    color: white;
-    background-color: var(--sidebar-color);
-
 }
 .role-team {
     color: white;
@@ -88,13 +86,23 @@ main {
     color: var(--red-team);
 }
 
-#clue {
+.clue-text {
+    width:160px;
+    font-size: 18px;
+    margin-right: 20px;
+}
+
+.clue {
+    margin:5px;
+    padding: 2px;
     width:160px;
     font-size: 15px;
+    margin-right: 20px;
 }
-#cluecount {
+
+select.clue {
     width:50px;
-    font-size: 15px;
+    font-size: 20px;
 }
 
 .blue-turn {
@@ -120,11 +128,12 @@ main {
     padding:10px;
 } 
 
-#clue,button,select {
+button,select {
     margin:5px;
     padding:5px;
-    font-size: 20px;
+    font-size: 18px;
 } 
+
 
 .board {
     height: 100%;
@@ -165,7 +174,7 @@ h2 {
     transition: transform 0.6s;
     transform-style: preserve-3d;
     border-radius: 10px;
-    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.4);
+    box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.6);
 }
 
 /* .flip-card:hover .flip-card-inner {

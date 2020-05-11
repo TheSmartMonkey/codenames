@@ -17,10 +17,10 @@
     <div w3-include-html="../components/navbar.html"></div>
 <main>
     <div id="blue-players-column" class="player-column">
-        <header>Blue team</header>
-        <h3 class="role-team">Spymaster</h3>
+        <div>Blue team</div>
+        <div class="role-team">Spymaster</div>
         <ul id="blue-spymaster-team"></ul>
-        <h3 class="role-team">Player</h3>
+        <div class="role-team">Player</div>
         <ul id="blue-player-team"></ul>
     
     </div>
@@ -52,15 +52,15 @@
         </center>
     </div>
     <div id="red-players-column" class="player-column">
-        <header>Red team</header>
-        <h3 class="role-team">Spymaster</h3>
+        <div>Red team</div>
+        <div class="role-team">Spymaster</div>
         <ul id="red-spymaster-team"></ul>
-        <h3 class="role-team">Player</h3>
+        <div class="role-team">Player</div>
         <ul id="red-player-team"></ul>
     </div>
 
     <!-- Script -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+    <script src="../js/socket.io.js"></script>
     <script src="../js/module.js"></script>
     <script src="../js/board.js"></script>
     <script>

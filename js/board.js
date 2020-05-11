@@ -80,14 +80,14 @@ class Board {
     }
 
     setTurn() {
-        document.getElementById('game-turn').innerHTML=(turn.team==team?"Your team":"Oppposite team");
-        document.getElementById('game-turn').className=team+"-turn";
+        document.getElementById('game-turn').innerHTML=turn.team;
+        document.getElementById('game-turn').className=turn.team+"-turn";
         if (role=="spymaster" && turn.role=="spymaster" && turn.team==team) {
             document.getElementById('game-clue').innerHTML=
                 '<label>Clue:</label>'
-                +'<input id="clue" type="text" size="20"/>'
+                +'<input id="clue" class="clue" type="text" size="20"/>'
                 +'<label>In:</label>'
-                +'<select id="cluecount">'
+                +'<select id="cluecount" class="clue">'
                 +'    <option value="1" selected="selected">1</option>'
                 +'    <option value="2">2</option>'
                 +'    <option value="3">3</option>'
@@ -100,9 +100,9 @@ class Board {
         else {
             document.getElementById('game-clue').innerHTML=
                 '<label>Clue:</label>'
-                +'<span id="clue"></span>'
+                +'<span id="clue" class="clue-text"></span>'
                 +'<label>In:</label>'
-                +'<span id="cluecount"></span>';
+                +'<span id="cluecount" class="clue-text"></span>';
         }
             
     }

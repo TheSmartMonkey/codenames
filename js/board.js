@@ -62,7 +62,7 @@ class Board {
                 let numberOfElements = 0;
                 cards.forEach(card => {
                     var colIndex=Math.trunc(numberOfElements/5)+1;
-                    this.cardComponent(card.word,card.team,role, document.getElementById("column"+colIndex))
+                    this.cardComponent(card.word,card.team,role, document.getElementById("board"))
                     if (card.found) {
                         this.turnCard(card.word);
                     }
@@ -82,6 +82,8 @@ class Board {
     setTurn() {
         document.getElementById('game-turn').innerHTML=turn.team;
         document.getElementById('game-turn').className=turn.team+"-turn";
+        document.getElementById('turn-info').innerHTML=
+                ((team==turn.team) && (role==turn.role))?"You Can Play":"Please Wait";
         if (role=="spymaster" && turn.role=="spymaster" && turn.team==team) {
             document.getElementById('game-clue').innerHTML=
                 '<label>Clue:</label>'

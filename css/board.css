@@ -6,10 +6,7 @@ main {
     display: flex;
 }
 .player-column {
-    width:200px;
     height:300px;
-    padding:0px;
-    margin:2px;
 }
 .player-column div {
     height:30px;
@@ -31,7 +28,7 @@ main {
     color: white;
     padding: 0px 10px 0;
 }
-}
+
 .role-team {
     color: white;
     width:100%;
@@ -45,10 +42,12 @@ main {
 }
 .game-info {
     display: flex;
+    flex-direction: row;
+    align-items: stretch;
     color: black;
     align-items: center;
     text-align: left;
-    width:50%;
+    width:80%;
     margin-top:5px;
 }
 .game-info div,label,span{
@@ -59,7 +58,7 @@ main {
 .info-part label,span {
     align-items: center;
     text-align: left;
-    font-size: 18px;  
+    font-size: 20px;  
 }
 
 .info-part {
@@ -95,7 +94,8 @@ main {
 .clue {
     margin:5px;
     padding: 2px;
-    width:160px;
+    width:100px;
+    flex-shrink:2;
     font-size: 15px;
     margin-right: 20px;
 }
@@ -133,12 +133,19 @@ button,select {
     padding:5px;
     font-size: 18px;
 } 
-
+.center-column {
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
 .board {
-    height: 100%;
+    width:100%;
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
+    align-items: space-between;
     justify-content: center;
 }
 
@@ -200,6 +207,7 @@ h2 {
 
 .flip-card-front h2 {
     margin-top:35px;
+    background-color: rgba(193, 180, 164, 0.886);
 }
 
 .flip-card-back img {
